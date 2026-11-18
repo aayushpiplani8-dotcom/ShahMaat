@@ -1,0 +1,31 @@
+# Render Blueprint: New -> Blueprint -> pick this repo. Secrets marked sync:false are
+# asked for during setup (paste them from Neon, Upstash and your generated secrets).
+services:
+  - type: web
+    name: shahmaat
+    runtime: docker
+    plan: free
+    region: singapore          # closest to India; keep Neon and Upstash in the same region
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health   # cheap: touches no database, so it doesn't wake Neon
+    envVars:
+      - key: ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "true"
+      - key: APP_ORIGIN
+        sync: false            # e.g. https://shahmaat.onrender.com
+      - key: DATABASE_URL
+        sync: false            # Neon, pooling OFF (migrations need a direct connection)
+      - key: REDIS_URL
+        sync: false            # Upstash rediss:// URL
+      - key: JWT_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: CHESSCOM_CONTACT
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

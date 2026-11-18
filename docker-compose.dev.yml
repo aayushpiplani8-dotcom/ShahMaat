@@ -1,0 +1,20 @@
+# Just the databases, for local development (run the app itself with uvicorn + vite).
+#   docker compose -f docker-compose.dev.yml up -d
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shahmaat
+      POSTGRES_PASSWORD: shahmaat
+      POSTGRES_DB: shahmaat
+    ports: ["5432:5432"]
+    volumes: [pgdata-dev:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shahmaat"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+volumes:
+  pgdata-dev:

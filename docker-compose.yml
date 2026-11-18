@@ -1,0 +1,42 @@
+# The whole stack in containers: app + Postgres + Redis.
+#   cp .env.example .env   (then set the two secrets)
+#   docker compose up --build
+# Open http://localhost:8000
+services:
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://shahmaat:${POSTGRES_PASSWORD:-shahmaat}@db:5432/shahmaat
+      REDIS_URL: redis://redis:6379/0
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shahmaat
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-shahmaat}
+      POSTGRES_DB: shahmaat
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shahmaat"]
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+volumes:
+  pgdata:
+  redisdata:

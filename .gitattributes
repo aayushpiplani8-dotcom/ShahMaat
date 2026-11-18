@@ -1,0 +1,6 @@
+# Keep Unix line endings (LF) in the repository and on every computer, Windows included.
+# Python tools and GitHub's Linux checks expect LF; this stops Windows from switching to CRLF.
+* text=auto eol=lf
+*.gz binary
+*.png binary
+*.svg text eol=lf

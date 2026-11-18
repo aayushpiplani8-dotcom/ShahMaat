@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+
+/* ShahMaat palette: deep ink background, saffron accent, violet secondary. */
+@theme {
+  --color-ink-950: #080a14;
+  --color-ink-900: #0d1020;
+  --color-ink-850: #121629;
+  --color-ink-800: #171c33;
+  --color-ink-700: #222842;
+  --color-ink-600: #2f3656;
+  --color-ink-500: #4a5278;
+  --color-ink-300: #9aa1c2;
+  --color-ink-100: #e4e6f2;
+
+  --color-saffron: #f5a524;
+  --color-saffron-dim: #c9831a;
+  --color-violet: #7c6cf2;
+
+  --color-best: #3ccf91;
+  --color-excellent: #66c48a;
+  --color-good: #8fb4d9;
+  --color-book: #b59a77;
+  --color-inaccuracy: #f2c94c;
+  --color-mistake: #f2994a;
+  --color-blunder: #eb5757;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 10% -10%, #1b1f3d 0%, transparent 60%), var(--color-ink-900);
+  color: var(--color-ink-100);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reusable building blocks. Declared with @utility (Tailwind v4) so they can
+   also be composed with @apply, e.g. btn-primary builds on btn. */
+@utility panel {
+  @apply rounded-2xl border border-ink-700 bg-ink-850/90 shadow-lg shadow-black/20;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-saffron text-ink-950 hover:bg-saffron-dim;
+}
+@utility btn-ghost {
+  @apply btn border border-ink-600 bg-ink-800 text-ink-100 hover:border-ink-500 hover:bg-ink-700;
+}
+@utility btn-danger {
+  @apply btn border border-blunder/40 bg-blunder/10 text-blunder hover:bg-blunder/20;
+}
+@utility input {
+  @apply w-full rounded-xl border border-ink-600 bg-ink-900 px-3 py-2 text-sm text-ink-100 outline-none placeholder:text-ink-500 focus:border-saffron;
+}
+@utility label {
+  @apply mb-1 block text-xs font-semibold tracking-wide text-ink-300 uppercase;
+}
+@utility chip {
+  @apply rounded-full bg-ink-700 px-2 py-0.5 text-xs font-medium text-ink-300;
+}
+
+/* Scrollbars that match the dark theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-600) transparent;
+}
